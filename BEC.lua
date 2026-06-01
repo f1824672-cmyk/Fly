@@ -191,3 +191,91 @@ UIS.InputChanged:Connect(function(input)
 		)
 	end
 end)
+local UIS = game:GetService("UserInputService")
+
+local dragging = false
+local dragInput, dragStart, startPos
+
+mainFrame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = mainFrame.Position
+	end
+end)
+
+mainFrame.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		local delta = input.Position - dragStart
+		mainFrame.Position = UDim2.new(
+			startPos.X.Scale,
+			startPos.X.Offset + delta.X,
+			startPos.Y.Scale,
+			startPos.Y.Offset + delta.Y
+		)
+	end
+end)
+
+UIS.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch then
+		dragging = false
+	end
+end) local themes = {
+	Black = Color3.fromRGB(20,20,20),
+	White = Color3.fromRGB(240,240,240),
+	Yellow = Color3.fromRGB(255,200,0),
+	Red = Color3.fromRGB(200,0,0)
+}
+
+local currentTheme = "Black"
+
+local function applyTheme(color)
+	mainFrame.BackgroundColor3 = color
+end
+
+-- contoh ganti tema
+applyTheme(themes.Black) local logo = Instance.new("TextButton")
+logo.Parent = game.CoreGui
+logo.Size = UDim2.new(0,60,0,60)
+logo.Position = UDim2.new(0.5,-30,0.5,-30)
+logo.BackgroundColor3 = Color3.fromRGB(0,0,0)
+logo.Text = "BEC"
+logo.TextColor3 = Color3.new(1,1,1)
+logo.Visible = false
+logo.BorderSizePixel = 0
+
+-- toggle
+toggle.MouseButton1Click:Connect(function()
+	open = not open
+	mainFrame.Visible = open
+	logo.Visible = not open
+end)
+
+logo.MouseButton1Click:Connect(function()
+	mainFrame.Visible = true
+	logo.Visible = false
+	open = true
+end) local themeBtn = Instance.new("TextButton")
+themeBtn.Parent = mainFrame
+themeBtn.Size = UDim2.new(1,0,0,40)
+themeBtn.Text = "Ganti Warna"
+
+themeBtn.MouseButton1Click:Connect(function()
+	if currentTheme == "Black" then
+		currentTheme = "White"
+	elseif currentTheme == "White" then
+		currentTheme = "Yellow"
+	elseif currentTheme == "Yellow" then
+		currentTheme = "Red"
+	else
+		currentTheme = "Black"
+	end
+	
+	applyTheme(themes[currentTheme])
+end)
