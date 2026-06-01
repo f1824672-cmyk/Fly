@@ -63,4 +63,67 @@ speedBtn.MouseButton1Click:Connect(function()
     speed = not speed
     local humanoid = player.Character:FindFirstChild("Humanoid")
     humanoid.WalkSpeed = speed and 50 or 16
+end)-- ESP SYSTEM
+local espEnabled = false
+
+local function createESP(player)
+    if player == game.Players.LocalPlayer then return end
+
+    local function addBillboard(char)
+        if char:FindFirstChild("Head") then
+            local billboard = Instance.new("BillboardGui")
+            billboard.Name = "ESP"
+            billboard.Size = UDim2.new(0,100,0,40)
+            billboard.AlwaysOnTop = true
+            billboard.Adornee = char.Head
+            billboard.Parent = char
+
+            local text = Instance.new("TextLabel", billboard)
+            text.Size = UDim2.new(1,0,1,0)
+            text.BackgroundTransparency = 1
+            text.TextColor3 = Color3.new(1,0,0)
+            text.Text = player.Name
+            text.TextScaled = true
+        end
+    end
+
+    if player.Character then
+        addBillboard(player.Character)
+    end
+
+    player.CharacterAdded:Connect(addBillboard)
+end
+
+espBtn.MouseButton1Click:Connect(function()
+    espEnabled = not espEnabled
+
+    if espEnabled then
+        for _,p in pairs(game.Players:GetPlayers()) do
+            createESP(p)
+        end
+    else
+        for _,p in pairs(game.Players:GetPlayers()) do
+            if p.Character and p.Character:FindFirstChild("ESP") then
+                p.Character.ESP:Destroy()
+            end
+        end
+    end
+end)
+-- LOGO BUTTON (TOGGLE)
+local toggleBtn = Instance.new("ImageButton", gui)
+toggleBtn.Size = UDim2.new(0,50,0,50)
+toggleBtn.Position = UDim2.new(0.02,0,0.2,0)
+toggleBtn.Image = "rbxassetid://7072719338" -- ganti kalau mau logo sendiri
+toggleBtn.BackgroundTransparency = 1 local opened = true
+
+toggleBtn.MouseButton1Click:Connect(function()
+    opened = not opened
+
+    if opened then
+        frame.Visible = true
+        toggleBtn:TweenSize(UDim2.new(0,50,0,50),"Out","Quad",0.2,true)
+    else
+        frame.Visible = false
+        toggleBtn:TweenSize(UDim2.new(0,40,0,40),"Out","Quad",0.2,true)
+    end
 end)
