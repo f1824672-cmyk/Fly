@@ -96,7 +96,22 @@ local speed = false
 speedBtn.MouseButton1Click:Connect(function()
     speed = not speed
     local humanoid = player.Character:FindFirstChild("Humanoid")
-    if humanoid then
+    if humanoid then -- TOGGLE LOGO
+local toggle = Instance.new("TextButton")
+toggle.Parent = game.CoreGui
+toggle.Size = UDim2.new(0,50,0,50)
+toggle.Position = UDim2.new(0.5,-25,0.3,0)
+toggle.BackgroundColor3 = Color3.fromRGB(80,0,120)
+toggle.Text = "BEC"
+toggle.TextColor3 = Color3.new(1,1,1)
+toggle.BorderSizePixel = 0
+
+local open = true
+
+toggle.MouseButton1Click:Connect(function()
+	open = not open
+	mainFrame.Visible = open
+end)
         humanoid.WalkSpeed = speed and 50 or 16
     end
 end)
@@ -143,4 +158,36 @@ espBtn.MouseButton1Click:Connect(function()
             end
         end
     end
+end)
+local UIS = game:GetService("UserInputService")
+
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+mainFrame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = mainFrame.Position
+	end
+end)
+
+mainFrame.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		local delta = input.Position - dragStart
+		mainFrame.Position = UDim2.new(
+			startPos.X.Scale,
+			startPos.X.Offset + delta.X,
+			startPos.Y.Scale,
+			startPos.Y.Offset + delta.Y
+		)
+	end
 end)
