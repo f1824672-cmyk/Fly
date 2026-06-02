@@ -1,443 +1,401 @@
--- ⚡ BLOOD BEC SYSTEM | DIPERBAIKI TOTAL SESUAI PERMINTAAN 👑
--- 🩸 BENTUK SEPERTI DELTA | FITUR LENGKAP TANPA CACAT 🩸
+-- ⚡ BLOOD BEC SYSTEM | KHUSUS ESP & AIMBOT 👑
+-- 🩸 TAMPILAN SEPERTI CONTOH GAMBAR | BISA DIGESER 🩸
+
+-- LAYANAN PENDUKUNG
+local UIS = game:GetService("UserInputService")
+local RS = game:GetService("RunService")
+local PemainLokal = game.Players.LocalPlayer
+local KarakterLokal = PemainLokal.Character or PemainLokal.CharacterAdded:Wait()
+local Kamera = workspace.CurrentCamera
 
 -- PENGATURAN UTAMA
 local Pengaturan = {
-    PosisiX = 50,
-    PosisiY = 50,
-    WarnaSaatIni = "Merah",
-    GeserMenu = true,
-    MenuTersembunyi = true, -- AWALNYA KECIL
-    KecepatanTerbang = 50, -- NILAI AWAL
-    KecepatanJalan = 30, -- NILAI AWAL
-    FiturTerbangAktif = false,
-    FiturKecepatanAktif = false,
-    FiturLompatTakHabis = false,
-    FiturESPNamaAktif = false
+    Posisi = Vector2.new(100, 100),
+    GeserAktif = false,
+    PosisiTetap = Vector2.new(0,0),
+    WarnaUtama = Color3.new(0, 1, 0), -- Hijau seperti contoh gambar
+    WarnaTulisan = Color3.new(1,1,1),
+    WarnaLatar = Color3.new(0.1, 0.1, 0.12),
+    -- FITUR YANG DIPAKAI
+    Aimbot = {Aktif = false, BagianSasaran = "Head"},
+    ESP = {
+        Kotak = false,
+        Nama = false,
+        Garis = false
+    }
 }
 
--- DAFTAR WARNA YANG BISA DIPILIH
+-- DAFTAR WARNA YANG BISA DIGANTI
 local DaftarWarna = {
-    Merah = Color3.new(0.8, 0.1, 0.1),
-    Hitam = Color3.new(0.1, 0.1, 0.1),
-    Putih = Color3.new(0.9, 0.9, 0.9),
-    Kuning = Color3.new(0.9, 0.8, 0.2),
-    Biru = Color3.new(0.1, 0.4, 0.8),
-    Ungu = Color3.new(0.5, 0.2, 0.8)
+    {Nama = "Hijau", Nilai = Color3.new(0, 1, 0)},
+    {Nama = "Merah", Nilai = Color3.new(1, 0.2, 0.2)},
+    {Nama = "Biru", Nilai = Color3.new(0.2, 0.5, 1)},
+    {Nama = "Kuning", Nilai = Color3.new(1, 1, 0.2)},
+    {Nama = "Ungu", Nilai = Color3.new(0.7, 0.2, 1)},
+    {Nama = "Putih", Nilai = Color3.new(1,1,1)}
 }
 
--- LAYAR UTAMA
-local MenuUtama = Instance.new("ScreenGui")
-MenuUtama.Name = "BLOOD_BEC_FIXED"
-MenuUtama.Parent = game.CoreGui
-MenuUtama.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+-- ==============================================
+-- 🎨 TAMPILAN UTAMA (SEPERTI CONTOH GAMBAR) 🎨
+-- ==============================================
+local Layar = Instance.new("ScreenGui")
+Layar.Name = "BLOOD_BEC_UI"
+Layar.Parent = game.CoreGui
+Layar.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- ==============================================
--- 📦 TAMPILAN KECIL (SEPERTI DELTA: KOTAK BEC) 📦
--- ==============================================
+-- 📦 TAMPILAN KECIL (KOTAK BEC)
 local BingkaiKecil = Instance.new("Frame")
 BingkaiKecil.Name = "BingkaiKecil"
-BingkaiKecil.Parent = MenuUtama
-BingkaiKecil.BackgroundColor3 = DaftarWarna.Hitam
-BingkaiKecil.BorderSizePixel = 0
-BingkaiKecil.Position = UDim2.new(0, Pengaturan.PosisiX, 0, Pengaturan.PosisiY)
-BingkaiKecil.Size = UDim2.new(0, 70, 0, 70)
+BingkaiKecil.Parent = Layar
+BingkaiKecil.BackgroundColor3 = Pengaturan.WarnaLatar
+BingkaiKecil.Position = UDim2.new(0, Pengaturan.Posisi.X, 0, Pengaturan.Posisi.Y)
+BingkaiKecil.Size = UDim2.new(0, 65, 0, 65)
 BingkaiKecil.Visible = true
-BingkaiKecil.Active = true -- ✅ DIBUAT AKTIF AGAR BISA DIKLIK
-BingkaiKecil.Draggable = Pengaturan.GeserMenu
-BingkaiKecil.BackgroundTransparency = 0.05
--- BIKIN SUDUT LENGKUNG
+BingkaiKecil.Active = true
 local SudutKecil = Instance.new("UICorner")
-SudutKecil.CornerRadius = UDim.new(0.2, 0)
+SudutKecil.CornerRadius = UDim.new(0.15, 0)
 SudutKecil.Parent = BingkaiKecil
 
--- TULISAN DI KOTAK KECIL
-local TeksBEC = Instance.new("TextLabel")
-TeksBEC.Name = "TeksBEC"
-TeksBEC.Parent = BingkaiKecil
-TeksBEC.BackgroundTransparency = 1
-TeksBEC.Size = UDim2.new(1, 0, 1, 0)
-TeksBEC.Text = "BEC"
-TeksBEC.TextColor3 = Color3.new(1,1,1)
-TeksBEC.Font = Enum.Font.GothamBold
-TeksBEC.TextScaled = true
+local TeksKecil = Instance.new("TextLabel")
+TeksKecil.Name = "TeksKecil"
+TeksKecil.Parent = BingkaiKecil
+TeksKecil.BackgroundTransparency = 1
+TeksKecil.Size = UDim2.new(1,0,1,0)
+TeksKecil.Text = "BEC"
+TeksKecil.TextColor3 = Pengaturan.WarnaUtama
+TeksKecil.Font = Enum.Font.GothamBold
+TeksKecil.TextScaled = true
 
--- ==============================================
--- 📂 TAMPILAN BESAR (MENU LENGKAP) 📂
--- ==============================================
+-- 📂 TAMPILAN BESAR (MENU UTAMA)
 local BingkaiBesar = Instance.new("Frame")
 BingkaiBesar.Name = "BingkaiBesar"
-BingkaiBesar.Parent = MenuUtama
-BingkaiBesar.BackgroundColor3 = Color3.new(0.12, 0.12, 0.12) -- LATAR GELAP ELEGAN
-BingkaiBesar.BorderSizePixel = 0
-BingkaiBesar.Position = UDim2.new(0, Pengaturan.PosisiX, 0, Pengaturan.PosisiY)
-BingkaiBesar.Size = UDim2.new(0, 300, 0, 400) -- UKURAN PAS DAN RAPI
-BingkaiBesar.Visible = false -- DISEMBUNYIKAN SAMPAI DIKLIK
+BingkaiBesar.Parent = Layar
+BingkaiBesar.BackgroundColor3 = Pengaturan.WarnaLatar
+BingkaiBesar.Position = UDim2.new(0, Pengaturan.Posisi.X, 0, Pengaturan.Posisi.Y)
+BingkaiBesar.Size = UDim2.new(0, 280, 0, 380)
+BingkaiBesar.Visible = false
 BingkaiBesar.Active = true
-BingkaiBesar.Draggable = Pengaturan.GeserMenu
-BingkaiBesar.BackgroundTransparency = 0.05
--- SUDUT LENGKUNG
 local SudutBesar = Instance.new("UICorner")
 SudutBesar.CornerRadius = UDim.new(0.08, 0)
 SudutBesar.Parent = BingkaiBesar
 
--- GARIS WARNA DI BAGIAN ATAS
-local GarisAtas = Instance.new("Frame")
-GarisAtas.Name = "GarisAtas"
-GarisAtas.Parent = BingkaiBesar
-GarisAtas.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
-GarisAtas.BorderSizePixel = 0
-GarisAtas.Position = UDim2.new(0, 0, 0, 0)
-GarisAtas.Size = UDim2.new(1, 0, 0, 35)
-GarisAtas.BackgroundTransparency = 0.15
+-- 🖱️ BAGIAN ATAS: TEMPAT GESER DAN JUDUL
+local BarAtas = Instance.new("Frame")
+BarAtas.Name = "BarAtas"
+BarAtas.Parent = BingkaiBesar
+BarAtas.BackgroundColor3 = Pengaturan.WarnaUtama
+BarAtas.BackgroundTransparency = 0.2
+BarAtas.Size = UDim2.new(1, 0, 0, 35)
+BarAtas.Position = UDim2.new(0,0,0,0)
 local SudutAtas = Instance.new("UICorner")
 SudutAtas.CornerRadius = UDim.new(0.08, 0)
-SudutAtas.Parent = GarisAtas
+SudutAtas.Parent = BarAtas
 
--- ✅ TULISAN "BLOOD BEC" DI KIRI ATAS SEPERTI CONTOH FOTO
 local Judul = Instance.new("TextLabel")
 Judul.Name = "Judul"
-Judul.Parent = GarisAtas
+Judul.Parent = BarAtas
 Judul.BackgroundTransparency = 1
 Judul.Position = UDim2.new(0, 12, 0, 0)
 Judul.Size = UDim2.new(0.8, 0, 1, 0)
-Judul.Font = Enum.Font.GothamBold
 Judul.Text = "BLOOD BEC"
-Judul.TextColor3 = Color3.new(1,1,1)
+Judul.TextColor3 = Pengaturan.WarnaTulisan
+Judul.Font = Enum.Font.GothamBold
 Judul.TextScaled = true
 Judul.TextXAlignment = Enum.TextXAlignment.Left
 
--- TOMBOL KECILKAN (TANDA - DI POJOK KANAN)
 local TombolTutup = Instance.new("TextButton")
 TombolTutup.Name = "TombolTutup"
-TombolTutup.Parent = GarisAtas
+TombolTutup.Parent = BarAtas
 TombolTutup.BackgroundTransparency = 1
 TombolTutup.Position = UDim2.new(0.9, -25, 0, 0)
 TombolTutup.Size = UDim2.new(0, 25, 1, 0)
 TombolTutup.Text = "−"
-TombolTutup.TextColor3 = Color3.new(1,1,1)
+TombolTutup.TextColor3 = Pengaturan.WarnaTulisan
 TombolTutup.Font = Enum.Font.GothamBold
 TombolTutup.TextScaled = true
 
--- TEMPAT MENAMPUNG SEMUA TOMBOL FITUR
-local WadahFitur = Instance.new("ScrollingFrame")
-WadahFitur.Name = "WadahFitur"
-WadahFitur.Parent = BingkaiBesar
-WadahFitur.BackgroundTransparency = 1
-WadahFitur.Position = UDim2.new(0, 15, 0, 45)
-WadahFitur.Size = UDim2.new(1, -30, 1, -50)
-WadahFitur.ScrollBarThickness = 3
-WadahFitur.ScrollBarImageColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
-WadahFitur.CanvasSize = UDim2.new(0, 0, 0, 320)
+-- 📋 TEMPAT SEMUA FITUR
+local Wadah = Instance.new("ScrollingFrame")
+Wadah.Name = "WadahFitur"
+Wadah.Parent = BingkaiBesar
+Wadah.BackgroundTransparency = 1
+Wadah.Position = UDim2.new(0, 15, 0, 45)
+Wadah.Size = UDim2.new(1, -30, 1, -50)
+Wadah.ScrollBarThickness = 3
+Wadah.ScrollBarImageColor3 = Pengaturan.WarnaUtama
+Wadah.CanvasSize = UDim2.new(0,0,0, 350)
 
 -- ==============================================
--- 🔄 FUNGSI UTAMA: MEMBUKA & MENUTUP MENU 🔄
+-- 🖱️ SISTEM BISA DIGESER KE MANA SAJA
 -- ==============================================
--- ✅ BAGIAN INI YANG DIPERBAIKI AGAR MAU BERUBAH SAAT DIKLIK
-local function GantiBentuk()
-    Pengaturan.MenuTersembunyi = not Pengaturan.MenuTersembunyi
-    if Pengaturan.MenuTersembunyi then
-        BingkaiBesar.Visible = false
-        BingkaiKecil.Visible = true
-    else
-        BingkaiBesar.Visible = true
-        BingkaiKecil.Visible = false
+BarAtas.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+        Pengaturan.GeserAktif = true
+        Pengaturan.PosisiTetap = Input.Position - Vector2.new(BingkaiBesar.AbsolutePosition.X, BingkaiBesar.AbsolutePosition.Y)
     end
-end
+end)
 
--- HUBUNGKAN KLIK DENGAN FUNGSI DI ATAS
+UIS.InputEnded:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+        Pengaturan.GeserAktif = false
+        Pengaturan.Posisi = Vector2.new(BingkaiBesar.AbsolutePosition.X, BingkaiBesar.AbsolutePosition.Y)
+    end
+end)
+
+UIS.InputChanged:Connect(function(Input)
+    if Pengaturan.GeserAktif and (Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch) then
+        local PosisiBaru = Input.Position - Pengaturan.PosisiTetap
+        BingkaiBesar.Position = UDim2.new(0, PosisiBaru.X, 0, PosisiBaru.Y)
+        BingkaiKecil.Position = UDim2.new(0, PosisiBaru.X, 0, PosisiBaru.Y)
+    end
+end)
+
+-- 🔄 GANTI BENTUK KECIL/BESAR
+local function GantiBentuk()
+    BingkaiBesar.Visible = not BingkaiBesar.Visible
+    BingkaiKecil.Visible = not BingkaiKecil.Visible
+end
 BingkaiKecil.MouseButton1Click:Connect(GantiBentuk)
 TombolTutup.MouseButton1Click:Connect(GantiBentuk)
 
 -- ==============================================
--- 🎨 FUNGSI GANTI WARNA 🎨
+-- 🧩 CARA MEMBUAT TOMBOL SEPERTI CONTOH GAMBAR
 -- ==============================================
-local function GantiWarna(NamaWarna)
-    if DaftarWarna[NamaWarna] then
-        Pengaturan.WarnaSaatIni = NamaWarna
-        GarisAtas.BackgroundColor3 = DaftarWarna[NamaWarna]
-        WadahFitur.ScrollBarImageColor3 = DaftarWarna[NamaWarna]
+local function BuatTombol(Nama, PosisiY)
+    local Bingkai = Instance.new("Frame")
+    Bingkai.Name = "Fitur_"..Nama
+    Bingkai.Parent = Wadah
+    Bingkai.BackgroundTransparency = 1
+    Bingkai.Position = UDim2.new(0, 0, 0, PosisiY)
+    Bingkai.Size = UDim2.new(1, 0, 0, 35)
+    
+    local Teks = Instance.new("TextLabel")
+    Teks.Name = "Teks"
+    Teks.Parent = Bingkai
+    Teks.BackgroundTransparency = 1
+    Teks.Position = UDim2.new(0, 5, 0, 0)
+    Teks.Size = UDim2.new(0.75, 0, 1, 0)
+    Teks.Text = Nama
+    Teks.TextColor3 = Pengaturan.WarnaTulisan
+    Teks.Font = Enum.Font.Gotham
+    Teks.TextXAlignment = Enum.TextXAlignment.Left
+    Teks.TextScaled = true
+    
+    -- TOMBOL SAKLAR BULAT SEPERTI DI GAMBAR
+    local Saklar = Instance.new("Frame")
+    Saklar.Name = "Saklar"
+    Saklar.Parent = Bingkai
+    Saklar.BackgroundColor3 = Color3.new(0.3,0.3,0.3) -- Warna abu saat mati
+    Saklar.Position = UDim2.new(0.8, 0, 0.2, 0)
+    Saklar.Size = UDim2.new(0, 40, 0, 20)
+    local SudutSaklar = Instance.new("UICorner")
+    SudutSaklar.CornerRadius = UDim.new(1,0)
+    SudutSaklar.Parent = Saklar
+    
+    local Bola = Instance.new("Frame")
+    Bola.Name = "Bola"
+    Bola.Parent = Saklar
+    Bola.BackgroundColor3 = Color3.new(1,1,1)
+    Bola.Position = UDim2.new(0, 2, 0, 2)
+    Bola.Size = UDim2.new(0, 16, 0, 16)
+    local SudutBola = Instance.new("UICorner")
+    SudutBola.CornerRadius = UDim.new(1,0)
+    SudutBola.Parent = Bola
+    
+    local Klik = Instance.new("TextButton")
+    Klik.Name = "Klik"
+    Klik.Parent = Bingkai
+    Klik.BackgroundTransparency = 1
+    Klik.Size = UDim2.new(1,0,1,0)
+    
+    -- Fungsi ubah warna saat nyala/mati
+    local Aktif = false
+    local function UbahStatus()
+        Aktif = not Aktif
+        if Aktif then
+            Saklar.BackgroundColor3 = Pengaturan.WarnaUtama -- Jadi hijau / warna pilihan
+            Bola.Position = UDim2.new(0, 22, 0, 2) -- Geser ke kanan
+        else
+            Saklar.BackgroundColor3 = Color3.new(0.3,0.3,0.3) -- Kembali abu
+            Bola.Position = UDim2.new(0, 2, 0, 2) -- Kembali kiri
+        end
     end
+    
+    return Bingkai, Klik, UbahStatus, function() return Aktif end
 end
 
 -- ==============================================
--- ⚡ FITUR KECEPATAN LARI (BISA DI ISI ANGKA) ⚡
+-- 🎨 FITUR GANTI WARNA
 -- ==============================================
-local TombolLari = Instance.new("TextButton")
-TombolLari.Name = "TombolLari"
-TombolLari.Parent = WadahFitur
-TombolLari.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-TombolLari.BorderSizePixel = 0
-TombolLari.Position = UDim2.new(0, 5, 0, 10)
-TombolLari.Size = UDim2.new(1, -10, 0, 38)
-TombolLari.Text = "❌ Kecepatan Lari"
-TombolLari.TextColor3 = Color3.new(1,1,1)
-TombolLari.Font = Enum.Font.Gotham
-TombolLari.TextXAlignment = Enum.TextXAlignment.Left
-TombolLari.TextScaled = true
-local SudutTombol1 = Instance.new("UICorner")
-SudutTombol1.CornerRadius = UDim.new(0.15, 0)
-SudutTombol1.Parent = TombolLari
-
--- KOLOM TEMPAT ISI ANGKA KECEPATAN
-local InputLari = Instance.new("TextBox")
-InputLari.Name = "InputLari"
-InputLari.Parent = WadahFitur
-InputLari.BackgroundColor3 = Color3.new(0.25, 0.25, 0.25)
-InputLari.BorderSizePixel = 0
-InputLari.Position = UDim2.new(0, 5, 0, 55)
-InputLari.Size = UDim2.new(1, -10, 0, 32)
-InputLari.Text = "Isi Angka: "..Pengaturan.KecepatanJalan -- CONTOH: 50
-InputLari.TextColor3 = Color3.new(0.9,0.9,0.9)
-InputLari.Font = Enum.Font.Gotham
-InputLari.ClearTextOnFocus = true
-InputLari.TextScaled = true
-local SudutInput1 = Instance.new("UICorner")
-SudutInput1.CornerRadius = UDim.new(0.15, 0)
-SudutInput1.Parent = InputLari
-
--- PROSES SAAT ANGKA DIUBAH
-InputLari.FocusLost:Connect(function()
-    local Angka = tonumber(InputLari.Text)
-    if Angka then
-        Pengaturan.KecepatanJalan = math.clamp(Angka, 10, 500) -- MIN 10, MAKS 500
-    end
-    InputLari.Text = "Isi Angka: "..Pengaturan.KecepatanJalan
-    -- JIKA SEDANG NYALA, LANGSUNG BERUBAH KECEPATANNYA
-    if Pengaturan.FiturKecepatanAktif then
-        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
-            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Pengaturan.KecepatanJalan
-        end
-    end
-end)
-
--- MENYALAKAN/MEMATIKAN FITUR
-TombolLari.MouseButton1Click:Connect(function()
-    Pengaturan.FiturKecepatanAktif = not Pengaturan.FiturKecepatanAktif
-    local Karakter = game.Players.LocalPlayer.Character
-    if not Karakter or not Karakter:FindFirstChild("Humanoid") then return end
+local _, KlikWarna, _, _ = BuatTombol("Ganti Warna", 300)
+local IndeksWarna = 1
+KlikWarna.MouseButton1Click:Connect(function()
+    IndeksWarna = IndeksWarna + 1
+    if IndeksWarna > #DaftarWarna then IndeksWarna = 1 end
+    Pengaturan.WarnaUtama = DaftarWarna[IndeksWarna].Nilai
     
-    if Pengaturan.FiturKecepatanAktif then
-        TombolLari.Text = "✅ Kecepatan Lari Aktif"
-        TombolLari.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
-        Karakter.Humanoid.WalkSpeed = Pengaturan.KecepatanJalan
-    else
-        TombolLari.Text = "❌ Kecepatan Lari"
-        TombolLari.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-        Karakter.Humanoid.WalkSpeed = 16 -- KEMBALI KE KECEPATAN BIASA
+    -- Terapkan warna baru ke semua bagian
+    BarAtas.BackgroundColor3 = Pengaturan.WarnaUtama
+    Wadah.ScrollBarImageColor3 = Pengaturan.WarnaUtama
+    TeksKecil.TextColor3 = Pengaturan.WarnaUtama
+end)
+
+-- ==============================================
+-- 🎯 FITUR AIMBOT
+-- ==============================================
+local _, KlikAimbot, UbahAimbot, DapatStatusAimbot = BuatTombol("Aimbot", 10)
+KlikAimbot.MouseButton1Click:Connect(function()
+    UbahAimbot()
+    Pengaturan.Aimbot.Aktif = DapatStatusAimbot()
+end)
+
+-- Fungsi cari musuh terdekat
+local function CariMusuhTerdekat()
+    local JarakTerdekat = math.huge
+    local SasaranTerbaik = nil
+    for _, Pemain in pairs(game.Players:GetPlayers()) do
+        if Pemain ~= PemainLokal and Pemain.Character and Pemain.Character:FindFirstChild(Pengaturan.Aimbot.BagianSasaran) and Pemain.Character:FindFirstChild("Humanoid") and Pemain.Character.Humanoid.Health > 0 then
+            local Bagian = Pemain.Character[Pengaturan.Aimbot.BagianSasaran]
+            local PosisiLayar, Terlihat = Kamera:WorldToViewportPoint(Bagian.Position)
+            if Terlihat then
+                local Jarak = (Vector2.new(PosisiLayar.X, PosisiLayar.Y) - Vector2.new(Kamera.ViewportSize.X/2, Kamera.ViewportSize.Y/2)).Magnitude
+                if Jarak < JarakTerdekat then
+                    JarakTerdekat = Jarak
+                    SasaranTerbaik = Bagian
+                end
+            end
+        end
+    end
+    return SasaranTerbaik
+end
+
+-- ==============================================
+-- 👁️ FITUR 3 JENIS ESP
+-- ==============================================
+
+-- 📦 ESP KOTAK
+local _, KlikESPKotak, UbahESPKotak, DapatStatusKotak = BuatTombol("ESP Kotak", 60)
+KlikESPKotak.MouseButton1Click:Connect(function()
+    UbahESPKotak()
+    Pengaturan.ESP.Kotak = DapatStatusKotak()
+    if not Pengaturan.ESP.Kotak then
+        for _, v in pairs(Layar:GetChildren()) do if v.Name == "ESP_KOTAK" then v:Destroy() end end
+    end
+end)
+
+-- 📝 ESP NAMA
+local _, KlikESPNama, UbahESPNama, DapatStatusNama = BuatTombol("ESP Nama", 110)
+KlikESPNama.MouseButton1Click:Connect(function()
+    UbahESPNama()
+    Pengaturan.ESP.Nama = DapatStatusNama()
+    if not Pengaturan.ESP.Nama then
+        for _, v in pairs(workspace:GetDescendants()) do if v.Name == "ESP_NAMA" then v:Destroy() end end
+    end
+end)
+
+-- 📍 ESP GARIS
+local _, KlikESPGaris, UbahESPGaris, DapatStatusGaris = BuatTombol("ESP Garis", 160)
+KlikESPGaris.MouseButton1Click:Connect(function()
+    UbahESPGaris()
+    Pengaturan.ESP.Garis = DapatStatusGaris()
+    if not Pengaturan.ESP.Garis then
+        for _, v in pairs(Layar:GetChildren()) do if v.Name == "ESP_GARIS" then v:Destroy() end end
     end
 end)
 
 -- ==============================================
--- 🚀 FITUR TERBANG (BISA DI ISI ANGKA) 🚀
+-- 🔄 SISTEM PERBARUI SETIAP SAAT
 -- ==============================================
-local TombolTerbang = Instance.new("TextButton")
-TombolTerbang.Name = "TombolTerbang"
-TombolTerbang.Parent = WadahFitur
-TombolTerbang.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-TombolTerbang.BorderSizePixel = 0
-TombolTerbang.Position = UDim2.new(0, 5, 0, 100)
-TombolTerbang.Size = UDim2.new(1, -10, 0, 38)
-TombolTerbang.Text = "❌ Terbang"
-TombolTerbang.TextColor3 = Color3.new(1,1,1)
-TombolTerbang.Font = Enum.Font.Gotham
-TombolTerbang.TextXAlignment = Enum.TextXAlignment.Left
-TombolTerbang.TextScaled = true
-local SudutTombol2 = Instance.new("UICorner")
-SudutTombol2.CornerRadius = UDim.new(0.15, 0)
-SudutTombol2.Parent = TombolTerbang
-
--- KOLOM TEMPAT ISI ANGKA KECEPATAN TERBANG
-local InputTerbang = Instance.new("TextBox")
-InputTerbang.Name = "InputTerbang"
-InputTerbang.Parent = WadahFitur
-InputTerbang.BackgroundColor3 = Color3.new(0.25, 0.25, 0.25)
-InputTerbang.BorderSizePixel = 0
-InputTerbang.Position = UDim2.new(0, 5, 0, 145)
-InputTerbang.Size = UDim2.new(1, -10, 0, 32)
-InputTerbang.Text = "Isi Angka: "..Pengaturan.KecepatanTerbang -- CONTOH: 100, 200
-InputTerbang.TextColor3 = Color3.new(0.9,0.9,0.9)
-InputTerbang.Font = Enum.Font.Gotham
-InputTerbang.ClearTextOnFocus = true
-InputTerbang.TextScaled = true
-local SudutInput2 = Instance.new("UICorner")
-SudutInput2.CornerRadius = UDim.new(0.15, 0)
-SudutInput2.Parent = InputTerbang
-
-InputTerbang.FocusLost:Connect(function()
-    local Angka = tonumber(InputTerbang.Text)
-    if Angka then
-        Pengaturan.KecepatanTerbang = math.clamp(Angka, 10, 1000) -- MIN 10, MAKS 1000
+RS.RenderStepped:Connect(function()
+    -- PERBARUI AIMBOT
+    if Pengaturan.Aimbot.Aktif then
+        local Sasaran = CariMusuhTerdekat()
+        if Sasaran then
+            Kamera.CFrame = CFrame.new(Kamera.CFrame.Position, Sasaran.Position)
+        end
     end
-    InputTerbang.Text = "Isi Angka: "..Pengaturan.KecepatanTerbang
-end)
-
-local SambunganTerbang
-TombolTerbang.MouseButton1Click:Connect(function()
-    Pengaturan.FiturTerbangAktif = not Pengaturan.FiturTerbangAktif
-    local Pemain = game.Players.LocalPlayer
-    local UIS = game:GetService("UserInputService")
     
-    if Pengaturan.FiturTerbangAktif then
-        TombolTerbang.Text = "✅ Terbang Aktif"
-        TombolTerbang.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
-        SambunganTerbang = game:GetService("RunService").RenderStepped:Connect(function()
-            if Pemain.Character and Pemain.Character:FindFirstChild("HumanoidRootPart") then
-                local Tubuh = Pemain.Character.HumanoidRootPart
-                Pemain.Character.Humanoid.PlatformStand = true -- AGAR TIDAK JATUH
-                local Arah = Vector3.new()
-                -- KENDALI TOMBOL
-                if UIS:IsKeyDown(Enum.KeyCode.W) then Arah += workspace.CurrentCamera.CFrame.LookVector end
-                if UIS:IsKeyDown(Enum.KeyCode.S) then Arah -= workspace.CurrentCamera.CFrame.LookVector end
-                if UIS:IsKeyDown(Enum.KeyCode.A) then Arah -= workspace.CurrentCamera.CFrame.RightVector end
-                if UIS:IsKeyDown(Enum.KeyCode.D) then Arah += workspace.CurrentCamera.CFrame.RightVector end
-                if UIS:IsKeyDown(Enum.KeyCode.Space) then Arah += Vector3.new(0,1,0) end -- NAIK
-                if UIS:IsKeyDown(Enum.KeyCode.LeftControl) then Arah += Vector3.new(0,-1,0) end -- TURUN
-                -- TERBANG SESUAI ANGKA YANG DIISI
-                Arah = Arah.Unit * Pengaturan.KecepatanTerbang
-                Tubuh.Velocity = Arah
-            end
-        end)
-    else
-        TombolTerbang.Text = "❌ Terbang"
-        TombolTerbang.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-        if SambunganTerbang then SambunganTerbang:Disconnect() end
-        -- KEMBALI KE JALAN BIASA
-        if Pemain.Character and Pemain.Character:FindFirstChild("Humanoid") then
-            Pemain.Character.Humanoid.PlatformStand = false
-        end
-    end
-end)
-
--- ==============================================
--- ⬆️ FITUR LOMBAT TANPA BATAS (INFINITE JUMP) ⬆️
--- ==============================================
-local TombolLompat = Instance.new("TextButton")
-TombolLompat.Name = "TombolLompat"
-TombolLompat.Parent = WadahFitur
-TombolLompat.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-TombolLompat.BorderSizePixel = 0
-TombolLompat.Position = UDim2.new(0, 5, 0, 190)
-TombolLompat.Size = UDim2.new(1, -10, 0, 38)
-TombolLompat.Text = "❌ Lompat Tanpa Batas"
-TombolLompat.TextColor3 = Color3.new(1,1,1)
-TombolLompat.Font = Enum.Font.Gotham
-TombolLompat.TextXAlignment = Enum.TextXAlignment.Left
-TombolLompat.TextScaled = true
-local SudutTombol3 = Instance.new("UICorner")
-SudutTombol3.CornerRadius = UDim.new(0.15, 0)
-SudutTombol3.Parent = TombolLompat
-
-local SambunganLompat
-TombolLompat.MouseButton1Click:Connect(function()
-    Pengaturan.FiturLompatTakHabis = not Pengaturan.FiturLompatTakHabis
-    local UIS = game:GetService("UserInputService")
-    if Pengaturan.FiturLompatTakHabis then
-        TombolLompat.Text = "✅ Lompat Tak Habis Aktif"
-        TombolLompat.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
-        SambunganLompat = UIS.JumpRequest:Connect(function()
-            local Karakter = game.Players.LocalPlayer.Character
-            if Karakter and Karakter:FindFirstChild("Humanoid") then
-                Karakter.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-            end
-        end)
-    else
-        TombolLompat.Text = "❌ Lompat Tanpa Batas"
-        TombolLompat.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-        if SambunganLompat then SambunganLompat:Disconnect() end
-    end
-end)
-
--- ==============================================
--- 👁️ FITUR ESP TAMPILKAN NAMA PEMAIN 👁️
--- ==============================================
-local TombolESP = Instance.new("TextButton")
-TombolESP.Name = "TombolESP"
-TombolESP.Parent = WadahFitur
-TombolESP.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-TombolESP.BorderSizePixel = 0
-TombolESP.Position = UDim2.new(0, 5, 0, 240)
-TombolESP.Size = UDim2.new(1, -10, 0, 38)
-TombolESP.Text = "❌ ESP Tampilkan Nama"
-TombolESP.TextColor3 = Color3.new(1,1,1)
-TombolESP.Font = Enum.Font.Gotham
-TombolESP.TextXAlignment = Enum.TextXAlignment.Left
-TombolESP.TextScaled = true
-local SudutTombol4 = Instance.new("UICorner")
-SudutTombol4.CornerRadius = UDim.new(0.15, 0)
-SudutTombol4.Parent = TombolESP
-
-local SambunganESP
-TombolESP.MouseButton1Click:Connect(function()
-    Pengaturan.FiturESPNamaAktif = not Pengaturan.FiturESPNamaAktif
-    if Pengaturan.FiturESPNamaAktif then
-        TombolESP.Text = "✅ ESP Nama Aktif"
-        TombolESP.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
-        -- HAPUS YANG LAMA JIKA ADA
-        for _,obj in pairs(workspace:GetDescendants()) do
-            if obj.Name == "ESP_NAMA_BLOOD_BEC" then obj:Destroy() end
-        end
-        -- BUAT YANG BARU SETIAP SAAT
-        SambunganESP = game:GetService("RunService").RenderStepped:Connect(function()
-            for _,Pemain in pairs(game.Players:GetPlayers()) do
-                if Pemain ~= game.Players.LocalPlayer and Pemain.Character and Pemain.Character:FindFirstChild("Head") then
-                    local Kepala = Pemain.Character.Head
-                    if not Kepala:FindFirstChild("ESP_NAMA_BLOOD_BEC") then
-                        -- BUAT TULISAN NAMA DI ATAS KEPALA
-                        local TampilanNama = Instance.new("BillboardGui")
-                        TampilanNama.Name = "ESP_NAMA_BLOOD_BEC"
-                        TampilanNama.Adornee = Kepala
-                        TampilanNama.Size = UDim2.new(4, 0, 2, 0)
-                        TampilanNama.AlwaysOnTop = true
+    -- HAPUS SEMUA ESP LAMA
+    for _, v in pairs(Layar:GetChildren()) do if v:IsA("Frame") and v.Name ~= "BingkaiKecil" and v.Name ~= "BingkaiBesar" then v:Destroy() end end
+    
+    -- PERBARUI SEMUA ESP AKTIF
+    for _, Pemain in pairs(game.Players:GetPlayers()) do
+        if Pemain ~= PemainLokal and Pemain.Character and Pemain.Character:FindFirstChild("Head") and Pemain.Character:FindFirstChild("Humanoid") and Pemain.Character.Humanoid.Health > 0 then
+            local Karakter = Pemain.Character
+            local Kepala = Karakter.Head
+            local Tubuh = Karakter:FindFirstChild("HumanoidRootPart")
+            if Tubuh then
+                -- Hitung posisi di layar
+                local PosisiTubuh, IsiTerlihat = Kamera:WorldToViewportPoint(Tubuh.Position)
+                local PosisiKaki = Kamera:WorldToViewportPoint(Tubuh.Position - Vector3.new(0, 3, 0))
+                local PosisiAtas = Kamera:WorldToViewportPoint(Tubuh.Position + Vector3.new(0, 4, 0))
+                
+                if IsiTerlihat then
+                    -- 📦 GAMBAR KOTAK
+                    if Pengaturan.ESP.Kotak then
+                        local Lebar = math.clamp(1500 / PosisiTubuh.Z, 15, 45)
+                        local Tinggi = Lebar * 1.6
                         
-                        local TeksNama = Instance.new("TextLabel")
-                        TeksNama.Parent = TampilanNama
-                        TeksNama.BackgroundTransparency = 1
-                        TeksNama.Size = UDim2.new(1, 0, 1, 0)
-                        TeksNama.Text = Pemain.Name -- TAMPILKAN NAMA ASLI PEMAIN
-                        TeksNama.TextColor3 = DaftarWarna[Pengaturan.WarnaSaatIni] -- WARNA SESUAI MENU
-                        TeksNama.Font = Enum.Font.GothamBold
-                        TeksNama.TextScaled = true
+                        local Kotak = Instance.new("Frame")
+                        Kotak.Name = "ESP_KOTAK"
+                        Kotak.Parent = Layar
+                        Kotak.BackgroundTransparency = 1
+                        Kotak.BorderMode = Enum.BorderMode.Inset
+                        Kotak.Position = UDim2.new(0, PosisiTubuh.X - Lebar/2, 0, PosisiAtas.Y)
+                        Kotak.Size = UDim2.new(0, Lebar, 0, PosisiKaki.Y - PosisiAtas.Y)
+                        
+                        local GarisBingkai = Instance.new("Frame")
+                        GarisBingkai.Name = "GarisBingkai"
+                        GarisBingkai.Parent = Kotak
+                        GarisBingkai.BackgroundColor3 = Pengaturan.WarnaUtama
+                        GarisBingkai.BorderSizePixel = 0
+                        GarisBingkai.Position = UDim2.new(0,0,0,0)
+                        GarisBingkai.Size = UDim2.new(1,0,1,0)
+                        GarisBingkai.BackgroundTransparency = 0
+                        GarisBingkai.BorderMode = Enum.BorderMode.Outline
+                        GarisBingkai.BorderColor3 = Pengaturan.WarnaUtama
+                        GarisBingkai.BorderWidthPixel = 1
+                    end
+                    
+                    -- 📍 GAMBAR GARIS
+                    if Pengaturan.ESP.Garis then
+                        local Garis = Instance.new("Frame")
+                        Garis.Name = "ESP_GARIS"
+                        Garis.Parent = Layar
+                        Garis.BackgroundColor3 = Pengaturan.WarnaUtama
+                        Garis.BorderSizePixel = 0
+                        Garis.AnchorPoint = Vector2.new(0.5, 0.5)
+                        Garis.Position = UDim2.new(0, PosisiTubuh.X, 0, PosisiTubuh.Y)
+                        Garis.Size = UDim2.new(0, 1, 0, (Kamera.ViewportSize.Y - PosisiTubuh.Y))
+                        Garis.Rotation = math.deg(math.atan2((PosisiTubuh.X - Kamera.ViewportSize.X/2), (PosisiTubuh.Y - Kamera.ViewportSize.Y)))
                     end
                 end
             end
-        end)
-    else
-        TombolESP.Text = "❌ ESP Tampilkan Nama"
-        TombolESP.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-        if SambunganESP then SambunganESP:Disconnect() end
-        -- HAPUS SEMUA TULISAN SAAT DIMATIKAN
-        for _,obj in pairs(workspace:GetDescendants()) do
-            if obj.Name == "ESP_NAMA_BLOOD_BEC" then obj:Destroy() end
+            
+            -- 📝 TAMPILKAN NAMA
+            if Pengaturan.ESP.Nama and Kepala then
+                local TampilanLama = Kepala:FindFirstChild("ESP_NAMA")
+                if TampilanLama then TampilanLama:Destroy() end
+                
+                local TampilanNama = Instance.new("BillboardGui")
+                TampilanNama.Name = "ESP_NAMA"
+                TampilanNama.Parent = Kepala
+                TampilanNama.Adornee = Kepala
+                TampilanNama.Size = UDim2.new(4, 0, 2, 0)
+                TampilanNama.AlwaysOnTop = true
+                
+                local TeksNama = Instance.new("TextLabel")
+                TeksNama.Name = "TeksNama"
+                TeksNama.Parent = TampilanNama
+                TeksNama.BackgroundTransparency = 1
+                TeksNama.Size = UDim2.new(1, 0, 1, 0)
+                TeksNama.Text = Pemain.Name
+                TeksNama.TextColor3 = Pengaturan.WarnaUtama
+                TeksNama.Font = Enum.Font.GothamBold
+                TeksNama.TextScaled = true
+            end
         end
     end
 end)
 
--- ==============================================
--- 🎨 TOMBOL GANTI WARNA TAMPILAN 🎨
--- ==============================================
-local TombolGantiWarna = Instance.new("TextButton")
-TombolGantiWarna.Name = "TombolGantiWarna"
-TombolGantiWarna.Parent = WadahFitur
-TombolGantiWarna.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-TombolGantiWarna.BorderSizePixel = 0
-TombolGantiWarna.Position = UDim2.new(0, 5, 0, 290)
-TombolGantiWarna.Size = UDim2.new(1, -10, 0, 38)
-TombolGantiWarna.Text = "Ubah Warna Tampilan 🎨"
-TombolGantiWarna.TextColor3 = Color3.new(1,1,1)
-TombolGantiWarna.Font = Enum.Font.Gotham
-TombolGantiWarna.TextScaled = true
-local SudutTombol5 = Instance.new("UICorner")
-SudutTombol5.CornerRadius = UDim.new(0.15, 0)
-SudutTombol5.Parent = TombolGantiWarna
-
-TombolGantiWarna.MouseButton1Click:Connect(function()
-    local Daftar = {"Merah", "Hitam", "Putih", "Kuning", "Biru", "Ungu"}
-    local Indeks = table.find(Daftar, Pengaturan.WarnaSaatIni) or 1
-    Indeks = Indeks + 1
-    if Indeks > #Daftar then Indeks = 1 end
-    GantiWarna(Daftar[Indeks])
-end)
-
--- SELESAI DAN BERHASIL
-print("[✅] BLOOD BEC BERHASIL DIMUAT! KLIK KOTAK BEC UNTUK MEMBUKA!")
+print("[✅] BLOOD BEC BERHASIL DIMUAT! KLIK KOTAK BEC UNTUK MEMBUKA MENU!")
