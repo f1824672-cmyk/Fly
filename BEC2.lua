@@ -1,17 +1,25 @@
--- ⚡ AURORA LITE SYSTEM ⚡
--- DIUBAH SESUAI PERINTAH KEKUASAAN TUAN SKY 👑
--- NAMA BARU: BLOOD BEC 🩸 | FITUR LENGKAP TETAP SAMA!
+-- ⚡ AURORA LITE SYSTEM | PERBAIKAN TOTAL UNTUK TUAN SKY 👑
+-- 🩸 NAMA: BLOOD BEC | VERSI TANPA CACAT 🩸
 
--- LAYAR UTAMA DAN PENGATURAN
+-- PENGATURAN UTAMA
 local Pengaturan = {
     PosisiX = 50,
     PosisiY = 50,
-    UkuranTampilan = 1, -- 1 = Normal, Bisa diperkecil/diperbesar
-    WarnaSaatIni = "Merah", -- Opsi: Merah, Hitam, Putih, Kuning, Biru, Ungu
+    UkuranTampilan = 1,
+    WarnaSaatIni = "Merah",
     GeserMenu = true,
+    MenuTersembunyi = false, -- BUAT MENYEMBUNYIKAN MENU JADI KECIL
+    -- NILAI YANG BISA DIATUR PENGGUNA
+    KecepatanTerbang = 50, -- NILAI AWAL, BISA DIUBAH
+    KecepatanJalan = 100, -- NILAI AWAL, BISA DIUBAH
+    -- STATUS FITUR (BISA NYALA/MATI)
+    FiturTerbangAktif = false,
+    FiturKecepatanAktif = false,
+    FiturESPAktif = false,
+    FiturAimbotAktif = false
 }
 
--- DAFTAR WARNA SESUAI PERINTAH SKY
+-- DAFTAR WARNA (SESOP PERINTAH)
 local DaftarWarna = {
     Merah = Color3.new(1, 0, 0),
     Hitam = Color3.new(0, 0, 0),
@@ -21,217 +29,339 @@ local DaftarWarna = {
     Ungu = Color3.new(0.5, 0, 1)
 }
 
--- TAMPILAN UTAMA (LOGO YANG UDAH DIUBAH JADI BLOOD BEC 🩸)
+-- ANTARMUKA UTAMA
 local MenuUtama = Instance.new("ScreenGui")
 local BingkaiUtama = Instance.new("Frame")
+local TombolSembunyi = Instance.new("TextButton") -- TOMBOL KECIL BESAR
 local LogoTeks = Instance.new("TextLabel")
 local DaftarFitur = Instance.new("Frame")
+local BingkaiKecil = Instance.new("Frame") -- TAMPILAN KETIKA DIKECILKAN
+local TeksKecil = Instance.new("TextLabel")
 
 -- KONFIGURASI DASAR
-MenuUtama.Name = "BLOOD_BEC_SYSTEM"
+MenuUtama.Name = "BLOOD_BEC_SYSTEM_FIXED"
 MenuUtama.Parent = game.CoreGui
 MenuUtama.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
+-- BINGKAI UTAMA
 BingkaiUtama.Parent = MenuUtama
 BingkaiUtama.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
 BingkaiUtama.BorderSizePixel = 0
 BingkaiUtama.Position = UDim2.new(0, Pengaturan.PosisiX, 0, Pengaturan.PosisiY)
-BingkaiUtama.Size = UDim2.new(0, 300 * Pengaturan.UkuranTampilan, 0, 400 * Pengaturan.UkuranTampilan)
+BingkaiUtama.Size = UDim2.new(0, 320, 0, 450)
 BingkaiUtama.Active = true
-BingkaiUtama.Draggable = Pengaturan.GeserMenu -- BISA DI TARIK KIRI KANAN
+BingkaiUtama.Draggable = Pengaturan.GeserMenu
 
--- 🩸 TULISAN LOGO YANG UDAH DIUBAH SESUAI PERMINTAAN 🩸
+-- TOMBOL DI KANAN ATAS BUAT KECILKAN MENU
+TombolSembunyi.Parent = BingkaiUtama
+TombolSembunyi.BackgroundColor3 = Color3.new(0.2,0.2,0.2)
+TombolSembunyi.BorderSizePixel = 0
+TombolSembunyi.Position = UDim2.new(0.9, -25, 0, 5)
+TombolSembunyi.Size = UDim2.new(0, 20, 0, 20)
+TombolSembunyi.Text = "-"
+TombolSembunyi.TextColor3 = Color3.new(1,1,1)
+TombolSembunyi.Font = Enum.Font.GothamBold
+
+-- TAMPILAN KETIKA DIKECILKAN
+BingkaiKecil.Parent = MenuUtama
+BingkaiKecil.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
+BingkaiKecil.BorderSizePixel = 0
+BingkaiKecil.Position = UDim2.new(0, Pengaturan.PosisiX, 0, Pengaturan.PosisiY)
+BingkaiKecil.Size = UDim2.new(0, 100, 0, 40)
+BingkaiKecil.Visible = false
+BingkaiKecil.Active = true
+BingkaiKecil.Draggable = true
+
+TeksKecil.Parent = BingkaiKecil
+TeksKecil.BackgroundTransparency = 1
+TeksKecil.Size = UDim2.new(1,0,1,0)
+TeksKecil.Text = "BLOOD BEC 🩸"
+TeksKecil.TextColor3 = Color3.new(1,1,1)
+TeksKecil.Font = Enum.Font.GothamBold
+TeksKecil.TextScaled = true
+
+-- LOGO UTAMA
 LogoTeks.Parent = BingkaiUtama
 LogoTeks.BackgroundColor3 = Color3.new(1, 1, 1, 0.1)
 LogoTeks.BorderSizePixel = 0
-LogoTeks.Size = UDim2.new(1, 0, 0, 50)
+LogoTeks.Position = UDim2.new(0, 10, 0, 10)
+LogoTeks.Size = UDim2.new(1, -20, 0, 50)
 LogoTeks.Font = Enum.Font.GothamBold
-LogoTeks.Text = "BLOOD BEC" -- <<< NAMA BARU DI SINI BOS!
-LogoTeks.TextColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
+LogoTeks.Text = "BLOOD BEC 🩸"
+LogoTeks.TextColor3 = Color3.new(1,1,1)
 LogoTeks.TextScaled = true
 
--- BAGIAN FITUR
+-- TEMPAT FITUR
 DaftarFitur.Parent = BingkaiUtama
 DaftarFitur.BackgroundTransparency = 1
-DaftarFitur.Position = UDim2.new(0, 10, 0, 60)
-DaftarFitur.Size = UDim2.new(1, -20, 1, -70)
+DaftarFitur.Position = UDim2.new(0, 15, 0, 70)
+DaftarFitur.Size = UDim2.new(1, -30, 1, -80)
 
--- FUNGSI UBAH WARNA (6 PILIHAN SESUAI PERINTAH)
+-- FUNGSI GANTI WARNA
 local function GantiWarna(NamaWarna)
     if DaftarWarna[NamaWarna] then
         Pengaturan.WarnaSaatIni = NamaWarna
         BingkaiUtama.BackgroundColor3 = DaftarWarna[NamaWarna]
-        LogoTeks.TextColor3 = DaftarWarna[NamaWarna]
-        -- PERBARUI WARNA SEMUA TOMBOL
+        BingkaiKecil.BackgroundColor3 = DaftarWarna[NamaWarna]
+        -- PERBARUI SEMUA TOMBOL
         for _,v in pairs(DaftarFitur:GetChildren()) do
-            if v:IsA("TextButton") then
+            if v:IsA("TextButton") or v:IsA("TextBox") then
                 v.BackgroundColor3 = DaftarWarna[NamaWarna]
             end
         end
     end
 end
 
--- FUNGSI UBAH UKURAN (KECILKAN / BESARKAN)
-local function UbahUkuran(Skala)
-    Pengaturan.UkuranTampilan = math.clamp(Skala, 0.5, 1.5) -- BATAS KECIL DAN BESAR
-    BingkaiUtama.Size = UDim2.new(0, 300 * Pengaturan.UkuranTampilan, 0, 400 * Pengaturan.UkuranTampilan)
+-- FUNGSI MENYEMBUNYIKAN / MEMBESARKAN MENU
+local function AturUkuranMenu()
+    Pengaturan.MenuTersembunyi = not Pengaturan.MenuTersembunyi
+    BingkaiUtama.Visible = not Pengaturan.MenuTersembunyi
+    BingkaiKecil.Visible = Pengaturan.MenuTersembunyi
 end
+TombolSembunyi.MouseButton1Click:Connect(AturUkuranMenu)
+BingkaiKecil.MouseButton1Click:Connect(AturUkuranMenu)
 
--- 🚀 FITUR UTAMA TETAP LENGKAP SESUAI YANG KAU MAU 🚀
-
--- 1. FITUR TERBANG (FLY)
+-- ==============================================
+-- 🚀 FITUR 1: TERBANG YANG BENAR & ATUR KECEPATAN 🚀
+-- ==============================================
 local TombolTerbang = Instance.new("TextButton")
 TombolTerbang.Parent = DaftarFitur
 TombolTerbang.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
 TombolTerbang.BorderSizePixel = 0
 TombolTerbang.Size = UDim2.new(1, 0, 0, 40)
 TombolTerbang.Position = UDim2.new(0, 0, 0, 10)
-TombolTerbang.Text = "AKTIFKAN TERBANG ✈️"
+TombolTerbang.Text = "❌ TERBANG (MATI)"
 TombolTerbang.TextColor3 = Color3.new(1,1,1)
+
+-- KOLOM ISI KECEPATAN TERBANG
+local InputKecepatanTerbang = Instance.new("TextBox")
+InputKecepatanTerbang.Parent = DaftarFitur
+InputKecepatanTerbang.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
+InputKecepatanTerbang.BorderSizePixel = 0
+InputKecepatanTerbang.Position = UDim2.new(0, 0, 0, 55)
+InputKecepatanTerbang.Size = UDim2.new(0.5, 0, 0, 35)
+InputKecepatanTerbang.Text = "KECEPATAN: "..Pengaturan.KecepatanTerbang
+InputKecepatanTerbang.TextColor3 = Color3.new(1,1,1)
+InputKecepatanTerbang.Font = Enum.Font.Gotham
+InputKecepatanTerbang.ClearTextOnFocus = true
+
+InputKecepatanTerbang.FocusLost:Connect(function()
+    local Angka = tonumber(InputKecepatanTerbang.Text)
+    if Angka then
+        Pengaturan.KecepatanTerbang = math.clamp(Angka, 10, 500) -- BATAS MIN MAKS
+    end
+    InputKecepatanTerbang.Text = "KECEPATAN: "..Pengaturan.KecepatanTerbang
+end)
+
+-- SISTEM TERBANG YANG BENAR
+local SambunganTerbang
 TombolTerbang.MouseButton1Click:Connect(function()
-    local Karakter = game.Players.LocalPlayer.Character
-    if Karakter and Karakter:FindFirstChild("Humanoid") then
-        Karakter.Humanoid.PlatformStand = true
-        local Tubuh = Karakter:FindFirstChild("HumanoidRootPart")
-        game:GetService("RunService").RenderStepped:Connect(function()
-            if Tubuh then
-                local Gerak = Vector3.new(
-                    game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.W) and -1 or game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.S) and 1 or 0,
-                    game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Space) and 1 or game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) and -1 or 0,
-                    game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.A) and -1 or game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.D) and 1 or 0
-                )
-                Tubuh.Velocity = (workspace.CurrentCamera.CFrame:VectorToWorldSpace(Gerak) * 50) -- KECEPATAN TERBANG
+    Pengaturan.FiturTerbangAktif = not Pengaturan.FiturTerbangAktif
+    
+    if Pengaturan.FiturTerbangAktif then
+        TombolTerbang.Text = "✅ TERBANG (NYALA)"
+        local Pemain = game.Players.LocalPlayer
+        local UIS = game:GetService("UserInputService")
+        
+        SambunganTerbang = game:GetService("RunService").RenderStepped:Connect(function()
+            local Karakter = Pemain.Character
+            if Karakter and Karakter:FindFirstChild("HumanoidRootPart") and Karakter:FindFirstChild("Humanoid") then
+                Tubuh = Karakter.HumanoidRootPart
+                Karakter.Humanoid.PlatformStand = true -- AGAR TIDAK JATUH
+                
+                -- ARAH GERAK YANG BENAR
+                local Arah = Vector3.new()
+                if UIS:IsKeyDown(Enum.KeyCode.W) then Arah += workspace.CurrentCamera.CFrame.LookVector end
+                if UIS:IsKeyDown(Enum.KeyCode.S) then Arah -= workspace.CurrentCamera.CFrame.LookVector end
+                if UIS:IsKeyDown(Enum.KeyCode.A) then Arah -= workspace.CurrentCamera.CFrame.RightVector end
+                if UIS:IsKeyDown(Enum.KeyCode.D) then Arah += workspace.CurrentCamera.CFrame.RightVector end
+                if UIS:IsKeyDown(Enum.KeyCode.Space) then Arah += Vector3.new(0,1,0) end -- NAIK KE ATAS ✅
+                if UIS:IsKeyDown(Enum.KeyCode.LeftControl) then Arah += Vector3.new(0,-1,0) end -- TURUN KE BAWAH ✅
+                
+                Arah = Arah.Unit * Pengaturan.KecepatanTerbang
+                Tubuh.Velocity = Arah
             end
         end)
+    else
+        TombolTerbang.Text = "❌ TERBANG (MATI)"
+        if SambunganTerbang then SambunganTerbang:Disconnect() end
+        -- KEMBALI KE JALAN BIASA
+        local Karakter = game.Players.LocalPlayer.Character
+        if Karakter and Karakter:FindFirstChild("Humanoid") then
+            Karakter.Humanoid.PlatformStand = false
+        end
     end
 end)
 
--- 2. FITUR KECEPATAN (SPEED)
+-- ==============================================
+-- ⚡ FITUR 2: KECEPATAN JALAN (BISA DIATUR NYALA/MATI) ⚡
+-- ==============================================
 local TombolKecepatan = Instance.new("TextButton")
 TombolKecepatan.Parent = DaftarFitur
 TombolKecepatan.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
 TombolKecepatan.BorderSizePixel = 0
+TombolKecepatan.Position = UDim2.new(0, 0, 0, 100)
 TombolKecepatan.Size = UDim2.new(1, 0, 0, 40)
-TombolKecepatan.Position = UDim2.new(0, 0, 0, 60)
-TombolKecepatan.Text = "KECEPATAN LUAR BIASA ⚡"
+TombolKecepatan.Text = "❌ KECEPATAN (MATI)"
 TombolKecepatan.TextColor3 = Color3.new(1,1,1)
-TombolKecepatan.MouseButton1Click:Connect(function()
-    local Karakter = game.Players.LocalPlayer.Character
-    if Karakter and Karakter:FindFirstChild("Humanoid") then
-        Karakter.Humanoid.WalkSpeed = 100 -- BISA DIUBAH SEMAKIN CEPAT
-        Karakter.Humanoid.JumpPower = 70
+
+-- KOLOM ATUR KECEPATAN JALAN
+local InputKecepatanJalan = Instance.new("TextBox")
+InputKecepatanJalan.Parent = DaftarFitur
+InputKecepatanJalan.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
+InputKecepatanJalan.BorderSizePixel = 0
+InputKecepatanJalan.Position = UDim2.new(0, 0, 0, 145)
+InputKecepatanJalan.Size = UDim2.new(0.5, 0, 0, 35)
+InputKecepatanJalan.Text = "JALAN: "..Pengaturan.KecepatanJalan
+InputKecepatanJalan.TextColor3 = Color3.new(1,1,1)
+InputKecepatanJalan.Font = Enum.Font.Gotham
+InputKecepatanJalan.ClearTextOnFocus = true
+
+InputKecepatanJalan.FocusLost:Connect(function()
+    local Angka = tonumber(InputKecepatanJalan.Text)
+    if Angka then Pengaturan.KecepatanJalan = math.clamp(Angka, 10, 500) end
+    InputKecepatanJalan.Text = "JALAN: "..Pengaturan.KecepatanJalan
+    -- JIKA SEDANG NYALA, LANGSUNG TERAPKAN
+    if Pengaturan.FiturKecepatanAktif then
+        local Karakter = game.Players.LocalPlayer.Character
+        if Karakter and Karakter:FindFirstChild("Humanoid") then
+            Karakter.Humanoid.WalkSpeed = Pengaturan.KecepatanJalan
+        end
     end
 end)
 
--- 3. FITUR LIHAT MUSUH (ESP)
+TombolKecepatan.MouseButton1Click:Connect(function()
+    Pengaturan.FiturKecepatanAktif = not Pengaturan.FiturKecepatanAktif
+    local Karakter = game.Players.LocalPlayer.Character
+    if not Karakter or not Karakter:FindFirstChild("Humanoid") then return end
+    
+    if Pengaturan.FiturKecepatanAktif then
+        TombolKecepatan.Text = "✅ KECEPATAN (NYALA)"
+        Karakter.Humanoid.WalkSpeed = Pengaturan.KecepatanJalan
+    else
+        TombolKecepatan.Text = "❌ KECEPATAN (MATI)"
+        Karakter.Humanoid.WalkSpeed = 16 -- KEMBALI KE KECEPATAN BIASA
+    end
+end)
+
+-- ==============================================
+-- 👁️ FITUR 3: ESP (LIHAT MUSUH NYALA/MATI) 👁️
+-- ==============================================
 local TombolESP = Instance.new("TextButton")
 TombolESP.Parent = DaftarFitur
 TombolESP.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
 TombolESP.BorderSizePixel = 0
+TombolESP.Position = UDim2.new(0, 0, 0, 190)
 TombolESP.Size = UDim2.new(1, 0, 0, 40)
-TombolESP.Position = UDim2.new(0, 0, 0, 110)
-TombolESP.Text = "TAMPILKAN MUSUH (ESP) 👁️"
+TombolESP.Text = "❌ ESP (MATI)"
 TombolESP.TextColor3 = Color3.new(1,1,1)
+
+local SambunganESP
 TombolESP.MouseButton1Click:Connect(function()
-    for _,Pemain in pairs(game.Players:GetPlayers()) do
-        if Pemain ~= game.Players.LocalPlayer and Pemain.Character and Pemain.Character:FindFirstChild("HumanoidRootPart") then
-            -- BUAT GARIS GAMBAR DI TUBUH LAWAN
-            local Garis = Instance.new("BoxHandleAdornment")
-            Garis.Name = "ESP_BLOOD_BEC"
-            Garis.Adornee = Pemain.Character.HumanoidRootPart
-            Garis.Size = Vector3.new(4, 6, 4)
-            Garis.Color3 = DaftarWarna[Pengaturan.WarnaSaatIni]
-            Garis.Transparency = 0.3
-            Garis.ZIndex = 10
-            Garis.AlwaysOnTop = true
-            Garis.Parent = Pemain.Character.HumanoidRootPart
+    Pengaturan.FiturESPAktif = not Pengaturan.FiturESPAktif
+    
+    if Pengaturan.FiturESPAktif then
+        TombolESP.Text = "✅ ESP (NYALA)"
+        -- HAPUS YANG LAMA KALAU ADA
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v.Name == "ESP_BLOOD_BEC" then v:Destroy() end
+        end
+        
+        SambunganESP = game:GetService("RunService").RenderStepped:Connect(function()
+            for _,Pemain in pairs(game.Players:GetPlayers()) do
+                if Pemain ~= game.Players.LocalPlayer and Pemain.Character and Pemain.Character:FindFirstChild("HumanoidRootPart") then
+                    local Tubuh = Pemain.Character.HumanoidRootPart
+                    if not Tubuh:FindFirstChild("ESP_BLOOD_BEC") then
+                        local Garis = Instance.new("BoxHandleAdornment")
+                        Garis.Name = "ESP_BLOOD_BEC"
+                        Garis.Adornee = Tubuh
+                        Garis.Size = Vector3.new(4, 6, 4)
+                        Garis.Color3 = DaftarWarna[Pengaturan.WarnaSaatIni]
+                        Garis.Transparency = 0.3
+                        Garis.ZIndex = 10
+                        Garis.AlwaysOnTop = true
+                        Garis.Parent = Tubuh
+                    end
+                end
+            end
+        end)
+    else
+        TombolESP.Text = "❌ ESP (MATI)"
+        if SambunganESP then SambunganESP:Disconnect() end
+        -- HAPUS SEMUA GARIS
+        for _,v in pairs(workspace:GetDescendants()) do
+            if v.Name == "ESP_BLOOD_BEC" then v:Destroy() end
         end
     end
 end)
 
--- 4. FITUR KUNCI TEMBAK (AIMBOT)
+-- ==============================================
+-- 🎯 FITUR 4: AIMBOT (NYALA/MATI) 🎯
+-- ==============================================
 local TombolAimbot = Instance.new("TextButton")
 TombolAimbot.Parent = DaftarFitur
 TombolAimbot.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
 TombolAimbot.BorderSizePixel = 0
+TombolAimbot.Position = UDim2.new(0, 0, 0, 235)
 TombolAimbot.Size = UDim2.new(1, 0, 0, 40)
-TombolAimbot.Position = UDim2.new(0, 0, 0, 160)
-TombolAimbot.Text = "KUNCI SASARAN (AIMBOT) 🎯"
+TombolAimbot.Text = "❌ AIMBOT (MATI)"
 TombolAimbot.TextColor3 = Color3.new(1,1,1)
+
+local SambunganAimbot
 TombolAimbot.MouseButton1Click:Connect(function()
+    Pengaturan.FiturAimbotAktif = not Pengaturan.FiturAimbotAktif
     local UIS = game:GetService("UserInputService")
     local Kamera = workspace.CurrentCamera
-    local SasaranTerdekat = nil
-    local JarakTerdekat = math.huge
     
-    -- CARI MUSUH TERDEKAT
-    local function CariMusuh()
-        SasaranTerdekat = nil
-        JarakTerdekat = math.huge
-        for _,Pemain in pairs(game.Players:GetPlayers()) do
-            if Pemain ~= game.Players.LocalPlayer and Pemain.Character and Pemain.Character:FindFirstChild("Head") then
-                local Kepala = Pemain.Character.Head
-                local LayarPos, Terlihat = Kamera:WorldToViewportPoint(Kepala.Position)
-                if Terlihat then
-                    local Jarak = (Vector2.new(LayarPos.X, LayarPos.Y) - Vector2.new(Kamera.ViewportSize.X/2, Kamera.ViewportSize.Y/2)).Magnitude
-                    if Jarak < JarakTerdekat then
-                        JarakTerdekat = Jarak
-                        SasaranTerdekat = Kepala
+    if Pengaturan.FiturAimbotAktif then
+        TombolAimbot.Text = "✅ AIMBOT (NYALA)"
+        SambunganAimbot = UIS.InputBegan:Connect(function(Input)
+            if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+                while UIS:IsMouseButtonPressed(Enum.MouseButton2) do
+                    task.wait()
+                    -- CARI MUSUH TERDEKAT
+                    local Sasaran, Jarak = nil, math.huge
+                    for _,Pemain in pairs(game.Players:GetPlayers()) do
+                        if Pemain ~= game.Players.LocalPlayer and Pemain.Character and Pemain.Character:FindFirstChild("Head") then
+                            local Pos, Terlihat = Kamera:WorldToViewportPoint(Pemain.Character.Head.Position)
+                            if Terlihat then
+                                local JarakSekarang = (Vector2.new(Pos.X, Pos.Y) - Vector2.new(Kamera.ViewportSize.X/2, Kamera.ViewportSize.Y/2)).Magnitude
+                                if JarakSekarang < Jarak then
+                                    Jarak = JarakSekarang
+                                    Sasaran = Pemain.Character.Head
+                                end
+                            end
+                        end
                     end
+                    -- KUNCI KE SANA
+                    if Sasaran then Kamera.CFrame = CFrame.new(Kamera.CFrame.Position, Sasaran.Position) end
                 end
             end
-        end
+        end)
+    else
+        TombolAimbot.Text = "❌ AIMBOT (MATI)"
+        if SambunganAimbot then SambunganAimbot:Disconnect() end
     end
-    
-    -- KUNCI TITIK PANDANG
-    UIS.InputBegan:Connect(function(Input)
-        if Input.UserInputType == Enum.UserInputType.MouseButton2 then -- KETIKA KLIK KANAN
-            while UIS:IsMouseButtonPressed(Enum.MouseButton2) do
-                task.wait()
-                CariMusuh()
-                if SasaranTerdekat then
-                    Kamera.CFrame = CFrame.new(Kamera.CFrame.Position, SasaranTerdekat.Position)
-                end
-            end
-        end
-    end)
 end)
 
--- MENU PENGATURAN WARNA (6 PILIHAN)
+-- ==============================================
+-- 🎨 FITUR GANTI WARNA 🎨
+-- ==============================================
 local TombolGantiWarna = Instance.new("TextButton")
 TombolGantiWarna.Parent = DaftarFitur
 TombolGantiWarna.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
 TombolGantiWarna.BorderSizePixel = 0
+TombolGantiWarna.Position = UDim2.new(0, 0, 0, 280)
 TombolGantiWarna.Size = UDim2.new(1, 0, 0, 40)
-TombolGantiWarna.Position = UDim2.new(0, 0, 0, 210)
 TombolGantiWarna.Text = "UBAH WARNA TAMPILAN 🎨"
 TombolGantiWarna.TextColor3 = Color3.new(1,1,1)
+
 TombolGantiWarna.MouseButton1Click:Connect(function()
-    -- SIKLUS 6 WARNA SESUAI PERINTAH: Merah, Hitam, Putih, Kuning, Biru, Ungu
     local Daftar = {"Merah", "Hitam", "Putih", "Kuning", "Biru", "Ungu"}
-    local IndeksSekarang = table.find(Daftar, Pengaturan.WarnaSaatIni) or 1
-    IndeksSekarang = IndeksSekarang + 1
-    if IndeksSekarang > #Daftar then IndeksSekarang = 1 end
-    GantiWarna(Daftar[IndeksSekarang])
+    local Indeks = table.find(Daftar, Pengaturan.WarnaSaatIni) or 1
+    Indeks = Indeks + 1
+    if Indeks > #Daftar then Indeks = 1 end
+    GantiWarna(Daftar[Indeks])
 end)
 
--- MENU PENGATURAN UKURAN (KECILKAN / BESARKAN)
-local TombolUbahUkuran = Instance.new("TextButton")
-TombolUbahUkuran.Parent = DaftarFitur
-TombolUbahUkuran.BackgroundColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
-TombolUbahUkuran.BorderSizePixel = 0
-TombolUbahUkuran.Size = UDim2.new(1, 0, 0, 40)
-TombolUbahUkuran.Position = UDim2.new(0, 0, 0, 260)
-TombolUbahUkuran.Text = "KECILKAN / BESARKAN 🔍"
-TombolUbahUkuran.TextColor3 = Color3.new(1,1,1)
-TombolUbahUkuran.MouseButton1Click:Connect(function()
-    if Pengaturan.UkuranTampilan == 1 then
-        UbahUkuran(0.6) -- JADI KECIL
-        TombolUbahUkuran.Text = "KEMBALI KE UKURAN AWAL"
-    else
-        UbahUkuran(1) -- KEMBALI BESAR
-        TombolUbahUkuran.Text = "KECILKAN / BESARKAN"
-    end
-end)
-
-print("[AURORA LITE] : SCRIPT BLOOD BEC SIAP DIGUNAKAN TUAN SKY! 🩸🔥✅")
+print("[AURORA LITE] : SCRIPT BLOOD BEC DIPERBAIKI & SIAP! 🩸✅")
