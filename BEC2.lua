@@ -1,10 +1,13 @@
+-- ⚡ AURORA LITE SYSTEM | DIPERBAIKI: BISA DIKLIK & LANGSUNG TERBUKA 👑
+-- 🩸 NAMA: BLOOD BEC | TIDAK LAGI MACET SAAT DIKLIK 🩸
+
 -- PENGATURAN UTAMA
 local Pengaturan = {
     PosisiX = 50,
     PosisiY = 50,
     WarnaSaatIni = "Merah",
     GeserMenu = true,
-    MenuTersembunyi = false,
+    MenuTersembunyi = true, -- AWALNYA KECIL
     KecepatanTerbang = 50,
     KecepatanJalan = 30,
     FiturTerbangAktif = false,
@@ -15,7 +18,7 @@ local Pengaturan = {
 
 -- DAFTAR WARNA
 local DaftarWarna = {
-    Merah = Color3.new(0.8, 0.1, 0.1), -- Merah gelap tidak terlalu terang
+    Merah = Color3.new(0.8, 0.1, 0.1),
     Hitam = Color3.new(0.1, 0.1, 0.1),
     Putih = Color3.new(0.9, 0.9, 0.9),
     Kuning = Color3.new(0.9, 0.8, 0.2),
@@ -25,7 +28,7 @@ local DaftarWarna = {
 
 -- LAYAR UTAMA
 local MenuUtama = Instance.new("ScreenGui")
-MenuUtama.Name = "BLOOD_BEC_MAIN"
+MenuUtama.Name = "BLOOD_BEC_MAIN_FIXED"
 MenuUtama.Parent = game.CoreGui
 MenuUtama.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -40,10 +43,10 @@ BingkaiKecil.BorderSizePixel = 0
 BingkaiKecil.Position = UDim2.new(0, Pengaturan.PosisiX, 0, Pengaturan.PosisiY)
 BingkaiKecil.Size = UDim2.new(0, 70, 0, 70)
 BingkaiKecil.Visible = true
-BingkaiKecil.Active = true
+BingkaiKecil.Active = true -- ✅ DIBUAT AKTIF AGAR BISA DIKLIK
 BingkaiKecil.Draggable = Pengaturan.GeserMenu
-BingkaiKecil.BackgroundTransparency = 0.1 -- Sedikit transparan biar tidak kaku
--- Tambah lengkungan biar lebih bagus
+BingkaiKecil.BackgroundTransparency = 0.1
+-- Lengkungan
 local SudutKecil = Instance.new("UICorner")
 SudutKecil.CornerRadius = UDim.new(0.2, 0)
 SudutKecil.Parent = BingkaiKecil
@@ -59,25 +62,25 @@ TeksBEC.Font = Enum.Font.GothamBold
 TeksBEC.TextScaled = true
 
 -- ==============================================
--- 📂 TAMPILAN BESAR (BENTUK SEPERTI CONTOH FOTO) 📂
+-- 📂 TAMPILAN BESAR (YANG AKAN MUNCUL SETELAH DIKLIK) 📂
 -- ==============================================
 local BingkaiBesar = Instance.new("Frame")
 BingkaiBesar.Name = "BingkaiBesar"
 BingkaiBesar.Parent = MenuUtama
-BingkaiBesar.BackgroundColor3 = Color3.new(0.12, 0.12, 0.12) -- Latar gelap elegan
+BingkaiBesar.BackgroundColor3 = Color3.new(0.12, 0.12, 0.12)
 BingkaiBesar.BorderSizePixel = 0
 BingkaiBesar.Position = UDim2.new(0, Pengaturan.PosisiX, 0, Pengaturan.PosisiY)
-BingkaiBesar.Size = UDim2.new(0, 300, 0, 420) -- Ukuran pas tidak terlalu besar
-BingkaiBesar.Visible = false
+BingkaiBesar.Size = UDim2.new(0, 300, 0, 420)
+BingkaiBesar.Visible = false -- ✅ AWALNYA DISEMBUNYIKAN
 BingkaiBesar.Active = true
 BingkaiBesar.Draggable = Pengaturan.GeserMenu
 BingkaiBesar.BackgroundTransparency = 0.05
--- Lengkungan sudut
+-- Lengkungan
 local SudutBesar = Instance.new("UICorner")
 SudutBesar.CornerRadius = UDim.new(0.08, 0)
 SudutBesar.Parent = BingkaiBesar
 
--- GARIS DI ATAS (TEMPAT TULISAN BLOOD BEC)
+-- GARIS ATAS
 local GarisAtas = Instance.new("Frame")
 GarisAtas.Name = "GarisAtas"
 GarisAtas.Parent = BingkaiBesar
@@ -90,7 +93,7 @@ local SudutAtas = Instance.new("UICorner")
 SudutAtas.CornerRadius = UDim.new(0.08, 0)
 SudutAtas.Parent = GarisAtas
 
--- ✅ TULISAN "BLOOD BEC" DI KIRI ATAS SEPERTI CONTOH FOTO
+-- ✅ TULISAN DI KIRI ATAS: BLOOD BEC
 local Judul = Instance.new("TextLabel")
 Judul.Name = "Judul"
 Judul.Parent = GarisAtas
@@ -98,12 +101,12 @@ Judul.BackgroundTransparency = 1
 Judul.Position = UDim2.new(0, 12, 0, 0)
 Judul.Size = UDim2.new(0.8, 0, 1, 0)
 Judul.Font = Enum.Font.GothamBold
-Judul.Text = "BLOOD BEC" -- Persis posisi tulisan di foto
+Judul.Text = "BLOOD BEC"
 Judul.TextColor3 = Color3.new(1,1,1)
 Judul.TextScaled = true
 Judul.TextXAlignment = Enum.TextXAlignment.Left
 
--- TOMBOL KECILKAN (DI POJOK KANAN ATAS)
+-- TOMBOL KECILKAN
 local TombolTutup = Instance.new("TextButton")
 TombolTutup.Name = "TombolTutup"
 TombolTutup.Parent = GarisAtas
@@ -115,8 +118,8 @@ TombolTutup.TextColor3 = Color3.new(1,1,1)
 TombolTutup.Font = Enum.Font.GothamBold
 TombolTutup.TextScaled = true
 
--- TEMPAT FITUR DI DALAM
-local WadahFitur = Instance.new("ScrollingFrame") -- BISA DIGULUNG JIKA KURANG TEMPAT
+-- TEMPAT ISI FITUR
+local WadahFitur = Instance.new("ScrollingFrame")
 WadahFitur.Name = "WadahFitur"
 WadahFitur.Parent = BingkaiBesar
 WadahFitur.BackgroundTransparency = 1
@@ -127,18 +130,23 @@ WadahFitur.ScrollBarImageColor3 = DaftarWarna[Pengaturan.WarnaSaatIni]
 WadahFitur.CanvasSize = UDim2.new(0, 0, 0, 340)
 
 -- ==============================================
--- 🔄 FUNGSI GANTI BENTUK 🔄
+-- 🔄 FUNGSI PENTING: CARA KERJA SAAT DIKLIK 🔄
 -- ==============================================
+-- ✅ INI YANG DIPERBAIKI AGAR MAU BERUBAH BENTUK
 local function GantiBentuk()
     Pengaturan.MenuTersembunyi = not Pengaturan.MenuTersembunyi
     if Pengaturan.MenuTersembunyi then
         BingkaiBesar.Visible = false
         BingkaiKecil.Visible = true
+        print("[INFO] Menu Dikecilkan")
     else
         BingkaiBesar.Visible = true
         BingkaiKecil.Visible = false
+        print("[INFO] Menu Dibesarkan / Dibuka")
     end
 end
+
+-- ✅ SAMBUNGAN KLIK YANG SUDAH DIPERBAIKI DAN PASTI BERFUNGSI
 BingkaiKecil.MouseButton1Click:Connect(GantiBentuk)
 TombolTutup.MouseButton1Click:Connect(GantiBentuk)
 
@@ -420,4 +428,4 @@ TombolGantiWarna.MouseButton1Click:Connect(function()
     GantiWarna(Daftar[Indeks])
 end)
 
-print("[✅] BENTUK DIUBAH JADI LEBIH ELEGAN SESUAI FOTO!")
+print("[✅] SELESAI DIPERBAIKI! SAATNYA DICOBA KLIK KOTAKNYA!")
